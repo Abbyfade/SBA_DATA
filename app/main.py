@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, UploadFile, File
 from sqlalchemy.orm import Session
-import services as _services
+import app.services as _services
 import models, crud
 from db import engine
 
