@@ -82,7 +82,6 @@ def upload_sheet(db:Session, excel_sheet: str):
     update_top_traders(db, top_traders)
     update_indices(db, indices)
 
-    os.remove(file_path)
 
     
 
