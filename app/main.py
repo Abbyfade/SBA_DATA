@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 import app.services as _services
-import models, crud
-from db import engine
+import app.models as models
+import app.crud as crud
+from app.db import engine
 
 models.Base.metadata.create_all(bind=engine)
 

@@ -1,6 +1,6 @@
 #models for database [SQLAlchemy]
 from sqlalchemy import Column, Integer, String, DateTime, Float
-from db import Base
+from app.db import Base
 
 class TopGainers(Base):
     __tablename__ = "top_gainers"
