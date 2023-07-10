@@ -69,7 +69,7 @@ def update_indices(db, dataframe):
         
         
 
-def upload_sheet(db:Session, excel_sheet: str):
+def upload_sheet(db:Session, excel_sheet: str, temp_file):
     file_path = excel_sheet
     data = pd.read_excel(file_path, sheet_name=None)
     top_gainers = data.get("Top Gainers")
@@ -81,6 +81,9 @@ def upload_sheet(db:Session, excel_sheet: str):
     update_top_losers(db, top_losers)
     update_top_traders(db, top_traders)
     update_indices(db, indices)
+
+    temp_file.close()
+    os.remove(temp_file.name)
 
 
     

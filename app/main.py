@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, UploadFile, File
+from fastapi import FastAPI, Depends, UploadFile, BackgroundTasks
 from sqlalchemy.orm import Session
 import app.services as _services
 import app.models as models
@@ -16,7 +16,7 @@ def index():
     return {"Message": "Success"}
 
 @app.post("/upload_sheet")
-def create_data(file: UploadFile, db: Session = Depends(_services.get_session)):
+def create_data(file: UploadFile, background_tasks: BackgroundTasks, db: Session = Depends(_services.get_session)):
     # contents = file.file.read()
     # with open(file.filename, "wb") as f:
     #     f.write(contents)
@@ -26,11 +26,11 @@ def create_data(file: UploadFile, db: Session = Depends(_services.get_session)):
         temp_file.write(contents)
         temp_file.flush()
         temp_file.seek(0)
-        
-        crud.upload_sheet(db, temp_file.name)
-        temp_file.close()
-        os.remove(temp_file.name)
-    return {"message": "file uploaded successfully"}
+        background_tasks.add_task(crud.upload_sheet, db, temp_file.name, temp_file)
+        # crud.upload_sheet(db, temp_file.name)
+        # temp_file.close()
+        # os.remove(temp_file.name)
+    return {"message": "file uploading in the background, check back in 3 minutes"}
 
 @app.get("/top_gainers/{country}")
 def get_gainers(country: str, db: Session = Depends(_services.get_session)):
