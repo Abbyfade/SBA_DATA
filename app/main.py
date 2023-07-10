@@ -14,8 +14,8 @@ def index():
     return {"Message": "Success"}
 
 @app.post("/upload_sheet")
-async def create_data(file: UploadFile, db: Session = Depends(_services.get_session)):
-    contents = await file.read()
+def create_data(file: UploadFile, db: Session = Depends(_services.get_session)):
+    contents = file.file.read()
     with open(file.filename, "wb") as f:
         f.write(contents)
     crud.upload_sheet(db, file.filename)
