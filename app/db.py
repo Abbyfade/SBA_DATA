@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from app.config import settings
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sbatest.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:Abiola@localhost:5432/sba_data"
+SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL#, connect_args = {"check_same_thread": False}
