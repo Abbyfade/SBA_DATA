@@ -1,5 +1,5 @@
 #models for database [SQLAlchemy]
-from sqlalchemy import Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, String, DateTime, Float, Numeric
 from app.db import Base
 
 class TopGainers(Base):
@@ -11,7 +11,7 @@ class TopGainers(Base):
     code = Column(String(255))
     opening_price = Column(Float)
     closing_price = Column(Float)
-    percent_change = Column(Float)
+    percent_change = Column(Numeric(precision=3, scale=2))
 
 class TopLosers(Base):
     __tablename__ = "top_losers"
@@ -22,7 +22,7 @@ class TopLosers(Base):
     code = Column(String(255))
     opening_price = Column(Float)
     closing_price = Column(Float)
-    percent_change = Column(Float)
+    percent_change = Column(Numeric(precision=3, scale=2))
 
 class TopTraders(Base):
     __tablename__ = "top_traders"
@@ -33,7 +33,7 @@ class TopTraders(Base):
     exchange_code = Column(String(255))
     opening_price = Column(Float)
     closing_price = Column(Float)
-    volume = Column(Float)
+    volume = Column(Integer)
 
 class Indices(Base):
     __tablename__ = "indices"
@@ -43,4 +43,4 @@ class Indices(Base):
     exchange_code = Column(String(255))
     previous_value = Column(Float)
     index_value = Column(Float)
-    percent_change = Column(Float)
+    percent_change = Column(Numeric(precision=3, scale=2))

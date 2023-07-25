@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import app.services as _services
+import app.schemas as schemas
 import app.models as models
 import app.crud as crud
 from app.db import engine
@@ -44,7 +45,8 @@ def create_data(file: UploadFile, background_tasks: BackgroundTasks, db: Session
 @app.get("/top_gainers/{country}")
 def get_gainers(country: str, db: Session = Depends(_services.get_session)):
     winners = crud.get_gainers(db, country)
-    return {"gainers":winners}
+    # return {"gainers":winners}
+    return winners
 
 @app.get("/top_losers/{country}")
 def get_losers(country: str, db: Session = Depends(_services.get_session)):
