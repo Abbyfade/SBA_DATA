@@ -44,24 +44,28 @@ def create_indices(db: Session, date:str, exchange_code: str, country: str, prev
     db.refresh
 
 def update_top_gainers(db, dataframe):
+    dataframe = dataframe[dataframe.notna().all(axis=1)]
     db.query(models.TopGainers).delete()
     db.commit()
     for row, col in dataframe.iterrows():
         create_gainer(db, col['Date'], col["Country"], col["No"], col["Code"], col["Opening Price"], col["Closing Price"], col["Change %"])
 
 def update_top_losers(db, dataframe):
+    dataframe = dataframe[dataframe.notna().all(axis=1)]
     db.query(models.TopLosers).delete()
     db.commit()
     for row, col in dataframe.iterrows():
         create_loser(db, col['Date'], col["Country"], col["No"], col["Code"], col["Opening Price"], col["Closing Price"], col["Change %"])
         
 def update_top_traders(db, dataframe):
+    dataframe = dataframe[dataframe.notna().all(axis=1)]
     db.query(models.TopTraders).delete()
     db.commit()
     for row, col in dataframe.iterrows():
         create_trader(db, col['Date'], col["Country"], col["No"], col["Code"], col["Opening Price"], col["Closing Price"], col["Volume"])
         
 def update_indices(db, dataframe):
+    dataframe = dataframe[dataframe.notna().all(axis=1)]
     db.query(models.Indices).delete()
     db.commit()
     for row, col in dataframe.iterrows():
@@ -76,6 +80,20 @@ def upload_sheet(db:Session, excel_sheet: str, temp_file):
     top_losers = data.get("Top Losers")
     top_traders = data.get("Top Traders")
     indices = data.get("Indices")
+
+    top_gainers["Date"] = pd.to_datetime(top_gainers["Date"])
+    top_gainers["Date"] = top_gainers["Date"].dt.strftime('%m/%d')
+    top_losers["Date"] = pd.to_datetime(top_losers["Date"])
+    top_losers["Date"] = top_losers["Date"].dt.strftime('%m/%d')
+    top_traders["Date"] = pd.to_datetime(top_traders["Date"])
+    top_traders["Date"] = top_traders["Date"].dt.strftime('%m/%d')
+    indices["Date"] = pd.to_datetime(indices["Date"])
+    indices["Date"] = indices["Date"].dt.strftime('%m/%d')
+
+    top_gainers['Change %'] = top_gainers['Change %'].round(2)
+    top_losers['Change %'] = top_losers['Change %'].round(2)
+    indices['Change %'] = indices['Change %'].round(2)
+
 
     update_top_gainers(db, top_gainers)
     update_top_losers(db, top_losers)
