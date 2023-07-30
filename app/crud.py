@@ -81,14 +81,10 @@ def upload_sheet(db:Session, excel_sheet: str, temp_file):
     top_traders = data.get("Top Traders")
     indices = data.get("Indices")
 
-    top_gainers["Date"] = pd.to_datetime(top_gainers["Date"])
-    top_gainers["Date"] = top_gainers["Date"].dt.strftime('%m/%d')
-    top_losers["Date"] = pd.to_datetime(top_losers["Date"])
-    top_losers["Date"] = top_losers["Date"].dt.strftime('%m/%d')
-    top_traders["Date"] = pd.to_datetime(top_traders["Date"])
-    top_traders["Date"] = top_traders["Date"].dt.strftime('%m/%d')
-    indices["Date"] = pd.to_datetime(indices["Date"])
-    indices["Date"] = indices["Date"].dt.strftime('%m/%d')
+    top_gainers["Date"] = pd.to_datetime(top_gainers['Date']).dt.strftime('%m/%d')
+    top_losers["Date"] = pd.to_datetime(top_losers["Date"]).dt.strftime('%m/%d')
+    top_traders["Date"] = pd.to_datetime(top_traders["Date"]).dt.strftime('%m/%d')
+    indices["Date"] = pd.to_datetime(indices["Date"]).dt.strftime('%m/%d')
 
     top_gainers['Change %'] = top_gainers['Change %'].round(2)
     top_losers['Change %'] = top_losers['Change %'].round(2)
