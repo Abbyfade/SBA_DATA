@@ -7,6 +7,7 @@ import app.models as models
 import app.crud as crud
 from app.db import engine
 import tempfile
+from typing import List
 import os
 
 models.Base.metadata.create_all(bind=engine)
@@ -42,26 +43,25 @@ def create_data(file: UploadFile, background_tasks: BackgroundTasks, db: Session
         # os.remove(temp_file.name)
     return {"message": "file uploading in the background, check back in 3 minutes"}
 
-@app.get("/top_gainers/{country}")
+@app.get("/top_gainers/{country}", response_model=List[schemas.Gainer])
 def get_gainers(country: str, db: Session = Depends(_services.get_session)):
-    winners = crud.get_gainers(db, country)
-    # return {"gainers":winners}
-    return winners
+    gainers = crud.get_gainers(db, country)
+    return gainers
 
-@app.get("/top_losers/{country}")
+@app.get("/top_losers/{country}", response_model=List[schemas.Loser])
 def get_losers(country: str, db: Session = Depends(_services.get_session)):
     losers = crud.get_losers(db, country)
-    return {"losers": losers}
+    return losers
 
-@app.get("/top_traders/{country}")
+@app.get("/top_traders/{country}", response_model=List[schemas.Trader])
 def get_traders(country: str, db: Session = Depends(_services.get_session)):
     traders = crud.get_traders(db, country)
-    return {"traders": traders}
+    return traders
 
-@app.get("/indices/{country}")
+@app.get("/indices/{country}", response_model=List[schemas.Index])
 def get_indices(country: str, db: Session = Depends(_services.get_session)):
     indices = crud.get_indices(db, country)
-    return {"indices": indices}
+    return indices
 
 
 

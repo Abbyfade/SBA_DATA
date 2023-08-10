@@ -1,40 +1,61 @@
-from typing import List
-from pydantic import BaseModel, condecimal
-from datetime import date
+from typing import List, Optional
+from pydantic import BaseModel, Field
 
-class TopGainers(BaseModel):
-    id: int
-    date: date
-    country: str
-    number: int
-    code: str
-    opening_price: float
-    closing_price: float
-    percent_change: condecimal(decimal_places=2, ge=0)
-
-class TopLosers(BaseModel):
-    id: int
+class GainerCreate(BaseModel):
     date: str
     country: str
     number: int
     code: str
-    opening_price: float
-    closing_price: float
-    percent_change: condecimal(decimal_places=2, ge=0)
+    opening_price: str
+    closing_price: str
+    percent_change: str
 
-class TopTraders(BaseModel):
+class LoserCreate(BaseModel):
+    date: str
+    country: str
+    number: int
+    code: str
+    opening_price: str
+    closing_price: str
+    percent_change: str
+
+class TraderCreate(BaseModel):
     date: str
     country: str
     number: int
     exchange_code: str
-    opening_price: float
-    closing_price: float
-    volume: int
+    opening_price: str
+    closing_price: str
+    volume: str
 
-class Indices(BaseModel):
+class IndexCreate(BaseModel):
     date: str
     country: str
     exchange_code: str
-    previous_value: float
-    index_value: float
-    percent_change: condecimal(decimal_places=2, ge=0)
+    previous_value: str
+    index_value: str
+    percent_change: str
+
+class Gainer(GainerCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class Loser(LoserCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class Trader(TraderCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class Index(IndexCreate):
+    id: int
+
+    class Config:
+        orm_mode = True

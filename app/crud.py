@@ -86,9 +86,26 @@ def upload_sheet(db:Session, excel_sheet: str, temp_file):
     top_traders["Date"] = pd.to_datetime(top_traders["Date"]).dt.strftime('%d/%b/%Y').str.upper()
     indices["Date"] = pd.to_datetime(indices["Date"]).dt.strftime('%d/%b/%Y').str.upper()
 
-    top_gainers['Change %'] = top_gainers['Change %'].round(2)
-    top_losers['Change %'] = top_losers['Change %'].round(2)
-    indices['Change %'] = indices['Change %'].round(2)
+    for column in top_gainers.columns:
+        if pd.api.types.is_numeric_dtype(top_gainers[column]) and (column != "No"):
+            top_gainers[column] = [format(i,".2f") for i in top_gainers[column]]
+
+    for column in top_losers.columns:
+        if pd.api.types.is_numeric_dtype(top_losers[column]) and (column != "No") :
+            top_losers[column] = [format(i,".2f") for i in top_losers[column]]
+
+    for column in top_traders.columns:
+        if pd.api.types.is_numeric_dtype(top_traders[column]) and (column != "No"):
+            top_traders[column] = [format(i,".2f") for i in top_traders[column]]
+
+    for column in indices.columns:
+        if pd.api.types.is_numeric_dtype(indices[column]) and (column != "No"):
+            indices[column] = [format(i,".2f") for i in indices[column]]
+
+
+    # top_gainers['Change %'] = top_gainers['Change %'].round(2)
+    # top_losers['Change %'] = top_losers['Change %'].round(2)
+    # indices['Change %'] = indices['Change %'].round(2)
 
 
     update_top_gainers(db, top_gainers)
